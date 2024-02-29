@@ -23,8 +23,8 @@ function Cards({ handler, pokemons }) {
       key={pokemon.id}
       onClick={() => handler(pokemon.selected, index)}
     >
-      <img src={pokemon.image} alt="" />
-      {JSON.stringify(pokemon)}
+      <img src={pokemon.image} alt="" draggable="false" />
+      <p className="pokemon-name">{pokemon.name}</p>
     </div>
   ));
 }
@@ -37,11 +37,13 @@ function App() {
   useEffect(() => {
     const fetchSprite = async () => {
       try {
-        const cardData = [
-          { id: 1, selected: false },
-          { id: 2, selected: false },
-          { id: 3, selected: false },
-        ];
+        const cardData = [];
+        while (cardData.length < 10) {
+          const randomID = Math.floor(Math.random() * 100) + 1;
+          if (!cardData.some((entry) => entry.id === randomID)) {
+            cardData.push({ id: randomID, selected: false });
+          }
+        }
 
         const promiseImages = cardData.map(async (entry) => {
           const response = await fetch(
