@@ -15,8 +15,6 @@ function shuffle(array) {
 }
 
 function Cards({ handler, pokemons }) {
-  // const [images, setImages] = useState([]);
-
   return pokemons.map((pokemon, index) => (
     <div
       className="container-p"
@@ -89,7 +87,9 @@ function App() {
 
   return (
     <>
-      <Cards handler={handleScore} pokemons={pokemons} />
+      <div id="game-display">
+        <Cards handler={handleScore} pokemons={pokemons} />
+      </div>
       <p id="score">Score: {score}</p>
       <p id="high-score">High Score: {highScore}</p>
     </>

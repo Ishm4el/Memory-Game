@@ -1,10 +1,25 @@
 * {
-    background-color: black;
-    color: white;
-    margin: 0;
-    padding: 0;
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 0;
 }
 
-.card-p {
-    background-color: rgb(0, 53, 99);
+.container-p {
+  background-color: rgb(0, 53, 99);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  min-width: min(20vw, 20vh);
+  min-height: min(20vw, 20vh);
+  margin: 1vw;
+  padding: 1vw;
+}
+
+#game-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
