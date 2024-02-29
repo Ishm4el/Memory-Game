@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const cardData = [
-  { id: 1, selected: false },
-  { id: 2, selected: false },
-  { id: 3, selected: false },
-];
-
 function shuffle(array) {
   let currentIndex = array.length,
     randomIndex;
@@ -20,58 +14,82 @@ function shuffle(array) {
   }
 }
 
-function Cards({ handler }) {
-  shuffle(cardData);
+function Cards({ handler, pokemons }) {
+  // const [images, setImages] = useState([]);
 
-  useEffect(() => {
-    Promise.all(
-      cardData.map((value) =>
-        fetch(`https://pokeapi.co/api/v2/pokemon-form/${value.id}/`).then(
-          (response) => response.json()
-        )
-      )
-    )
-      .then((responses) => {
-        const responseData = responses.map(
-          (response) => response.sprites.front_default
-        );
-        console.log("Fetched data:", responseData);
-        cardData.forEach((entry, index) => (entry.image = responseData[index]));
-        console.log(cardData);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  });
-
-  return cardData.map((value, index) => (
-    <p
-      key={value.id}
-      className="card-p"
-      onClick={() => handler(value.selected, index)}
+  return pokemons.map((pokemon, index) => (
+    <div
+      className="container-p"
+      key={pokemon.id}
+      onClick={() => handler(pokemon.selected, index)}
     >
-      {value.id} {value.selected}
-    </p>
+      <img src={pokemon.image} alt="" />
+      {JSON.stringify(pokemon)}
+    </div>
   ));
 }
 
 function App() {
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [pokemons, setPokemons] = useState([]);
+
+  useEffect(() => {
+    const fetchSprite = async () => {
+      try {
+        const cardData = [
+          { id: 1, selected: false },
+          { id: 2, selected: false },
+          { id: 3, selected: false },
+        ];
+
+        const promiseImages = cardData.map(async (entry) => {
+          const response = await fetch(
+            `https://pokeapi.co/api/v2/pokemon-form/${entry.id}/`
+          );
+          return await response.json();
+        });
+        const fetchedData = await Promise.all(promiseImages);
+        setPokemons(
+          cardData.map((entry, index) => {
+            const [name, image] = [
+              fetchedData[index].name,
+              fetchedData[index].sprites.front_default,
+            ];
+            entry.name = name;
+            entry.image = image;
+            return entry;
+          })
+        );
+      } catch (error) {
+        console.error("error fetching pokemon data", error);
+      }
+    };
+    fetchSprite();
+  }, []);
 
   function handleScore(previouslySelected, index) {
     if (previouslySelected === false) {
-      cardData[index].selected = true;
-      setScore(score + 1);
+      pokemons[index].selected = true;
+      const newScore = score + 1;
+      setScore(newScore);
+      if (newScore > highScore) {
+        setHighScore(newScore);
+      }
       console.log("here!");
     } else if (previouslySelected === true) {
-      cardData.forEach((value) => (value.selected = false));
+      pokemons.forEach((value) => (value.selected = false));
       setScore(0);
     }
   }
 
+  shuffle(pokemons);
+
   return (
     <>
-      <Cards handler={handleScore} />
-      Hello Score: {score}
-      cardData: {JSON.stringify(cardData)}
+      <Cards handler={handleScore} pokemons={pokemons} />
+      <p id="score">Score: {score}</p>
+      <p id="high-score">High Score: {highScore}</p>
     </>
   );
 }
