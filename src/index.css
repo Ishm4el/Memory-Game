@@ -30,3 +30,29 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
+
+#score-display {
+  display: flex;
+  flex-direction: column;
+}
+
+#score {
+  font-size: xx-large;
+  color: gold;
+}
+
+#high-score {
+  font-size: x-large;
+  color: gold;
+  opacity: 90%;
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+}
+
+#header > h1 {
+  color: yellow;
+  text-shadow: -1px 0 blue, 0 1px blue, 1px 0 blue, 0 -1px blue;
+}

@@ -87,11 +87,16 @@ function App() {
 
   return (
     <>
+      <div id="header">
+        <h1>Pokemon Memory Game</h1>
+      </div>
       <div id="game-display">
         <Cards handler={handleScore} pokemons={pokemons} />
       </div>
-      <p id="score">Score: {score}</p>
-      <p id="high-score">High Score: {highScore}</p>
+      <div id="score-display">
+        <p id="score">Score: {score}</p>
+        <p id="high-score">High Score: {highScore}</p>
+      </div>
     </>
   );
 }
