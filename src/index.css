@@ -16,6 +16,13 @@
   min-height: min(20vw, 20vh);
   margin: 1vw;
   padding: 1vw;
+  transform: scale(1);
+  transition-property: transform;
+  transition: 0.2s ease-out;
+}
+
+.container-p:hover {
+  transform: scale(1.1);
 }
 
 #game-display {
